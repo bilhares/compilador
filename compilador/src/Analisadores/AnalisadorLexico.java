@@ -6,39 +6,36 @@ import Elementos.TabelaSimbolos;
 import Elementos.Token;
 
 public class AnalisadorLexico {
-	
-	
+
 	private BufferEntrada buffer;
 	private TabelaSimbolos ts;
 	private Token tk;
 
-	AnalisadorLexico(String endereco){
-		
+	AnalisadorLexico(String endereco) {
+
 		buffer = new BufferEntrada(endereco);
 		ts = new TabelaSimbolos();
-		
+
 	}
-	
-	public   Token lex(){
+
+	public Token lex() {
 		char lookahead = buffer.getNext();
 		int estado = 0;
-		
-		while(true) {//apenas aqui é para implementar
-			switch(estado) {
+
+		while (true) {// apenas aqui é para implementar
+			switch (estado) {
 			case 0:
-				switch(lookahead) {
+				switch (lookahead) {
 				case '\n':
 				case ' ':
 				case '\t':
 					estado = 0;
 					buffer.getValue();
-					lookahead = buffer.getNext();					
+					lookahead = buffer.getNext();
 					break;
 				case 'A':
-				
 				case 'C':
 				case 'D':
-				case 'E':
 				case 'F':
 				case 'H':
 				case 'J':
@@ -49,7 +46,6 @@ public class AnalisadorLexico {
 				case 'O':
 				case 'P':
 				case 'Q':
-				case 'R':
 				case 'S':
 				case 'T':
 				case 'U':
@@ -59,12 +55,16 @@ public class AnalisadorLexico {
 					estado = 1;
 					lookahead = buffer.getNext();
 					break;
+				case 'E':
+					estado = 19;
+					lookahead = buffer.getNext();
+					break;
 				case 'V':
 					estado = 6;
 					lookahead = buffer.getNext();
 					break;
 				case 'I':
-					estado = 13;
+					estado = 12;
 					lookahead = buffer.getNext();
 					break;
 				case 'G':
@@ -72,7 +72,15 @@ public class AnalisadorLexico {
 					lookahead = buffer.getNext();
 					break;
 				case 'B':
-					estado=/*Qual estado?*/;
+					estado = 14;
+					lookahead = buffer.getNext();
+					break;
+				case 'R':
+					estado = 22;
+					lookahead = buffer.getNext();
+					break;
+				case 'W':
+					estado = 26;
 					lookahead = buffer.getNext();
 					break;
 				case '0':
@@ -85,19 +93,17 @@ public class AnalisadorLexico {
 				case '7':
 				case '8':
 				case '9':
-					estado = 20;
-					lookahead = buffer.getNext();
-					break;
+
 				default:
-					System.out.println("Erro na sequencia "+ buffer.getValue());
-					while(lookahead != ' '||lookahead != '\n'||lookahead != '\t')
-						lookahead =buffer.getNext(); 
-					estado =0;
-				
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+
 				}
 				break;
 			case 1:
-				switch(lookahead) {
+				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
@@ -127,12 +133,11 @@ public class AnalisadorLexico {
 					lookahead = buffer.getNext();
 					break;
 				default:
-			
-			
+
 				}
 				break;
 			case 2:
-				switch(lookahead) {
+				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
@@ -162,12 +167,11 @@ public class AnalisadorLexico {
 					lookahead = buffer.getNext();
 					break;
 				default:
-			
-			
+
 				}
 				break;
 			case 3:
-				switch(lookahead) {
+				switch (lookahead) {
 				case '0':
 				case '1':
 				case '2':
@@ -182,21 +186,20 @@ public class AnalisadorLexico {
 					lookahead = buffer.getNext();
 					break;
 				default:
-			
-			
+
 				}
 				break;
 			case 4:
 				tk = new Token();
 				tk.setTipo(Tipos.VAR);
-				tk.setValor((String)buffer.getValue());
-				if(!ts.consultaTabela((String)tk.getValor()))
-					ts.insereSimbolo((String)buffer.getValue());
-				
+				tk.setValor((String) buffer.getValue());
+				if (!ts.consultaTabela((String) tk.getValor()))
+					ts.insereSimbolo((String) buffer.getValue());
+
 				return tk;
-			
+
 			case 6:
-				switch(lookahead) {
+				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
@@ -222,132 +225,131 @@ public class AnalisadorLexico {
 				case 'V':
 				case 'I':
 				case 'G':
-					estado =2;
+					estado = 2;
 					lookahead = buffer.getNext();
 					break;
 				case ':':
 					estado = 7;
 					break;
 				default:
-					
+
 				}
 				break;
-			case 7:	
+			case 7:
 				tk = new Token();
 				tk.setTipo(Tipos.DEFVAR);
 				return tk;
-				
-			case 8: 
-				switch(lookahead) {
-					case 'A':
-					case 'B':
-					case 'C':
-					case 'D':
-					case 'E':
-					case 'F':
-					case 'H':
-					case 'J':
-					case 'K':
-					case 'L':
-					case 'M':
-					case 'N':
-					
-					case 'P':
-					case 'Q':
-					case 'R':
-					case 'S':
-					case 'T':
-					case 'U':
-					case 'X':
-					case 'Y':
-					case 'Z':
-					case 'V':
-					case 'I':
-					case 'G':
-						estado = 2;
-						lookahead= buffer.getNext();
-						break;
-					case 'O':
-						estado =9;
-						lookahead=buffer.getNext();
-						break;
-					default:
-				}
-				break;
-			case 9:
-				switch(lookahead) {
-					case 'A':
-					case 'B':
-					case 'C':
-					case 'D':
-					case 'E':
-					case 'F':
-					case 'H':
-					case 'J':
-					case 'K':
-					case 'L':
-					case 'M':
-					case 'N':
-					case 'O':
-					case 'P':
-					case 'Q':
-					case 'R':
-					case 'S':
-					
-					case 'U':
-					case 'X':
-					case 'Y':
-					case 'Z':
-					case 'V':
-					case 'I':
-					case 'G': 
-						estado = 3;
-						lookahead = buffer.getNext();
-						break;
-					case 'T':
-						estado = 10;
-						lookahead = buffer.getNext();
-						break;
-					default:
-						
-				
-				}
-				break;
-			case 10:
-				switch(lookahead) {
-					case 'O':
-						estado = 11;
-						break;
-					case '0':
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-					case '9':
-						estado=4;
-						break;
-					default:
-						
-				}
-			
-				break;
-			case 11:
-				tk = new Token();
-				tk.setTipo(Tipos.SALTO);
-				return tk;			
-			
-			case 12:
-				switch(lookahead) {
+
+			case 8:
+				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
 				case 'D':
 				case 'E':
-				
+				case 'F':
+				case 'H':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'X':
+				case 'Y':
+				case 'Z':
+				case 'V':
+				case 'I':
+				case 'G':
+					estado = 2;
+					lookahead = buffer.getNext();
+					break;
+				case 'O':
+					estado = 9;
+					lookahead = buffer.getNext();
+					break;
+				default:
+				}
+				break;
+			case 9:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+				case 'H':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+
+				case 'U':
+				case 'X':
+				case 'Y':
+				case 'Z':
+				case 'V':
+				case 'I':
+				case 'G':
+					estado = 3;
+					lookahead = buffer.getNext();
+					break;
+				case 'T':
+					estado = 10;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			case 10:
+				switch (lookahead) {
+				case 'O':
+					estado = 11;
+					break;
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					estado = 4;
+					break;
+				default:
+
+				}
+
+				break;
+			case 11:
+				tk = new Token();
+				tk.setTipo(Tipos.SALTO);
+				return tk;
+
+			case 12:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+
 				case 'H':
 				case 'J':
 				case 'K':
@@ -375,39 +377,490 @@ public class AnalisadorLexico {
 					lookahead = buffer.getNext();
 					break;
 				default:
-			
-			
+
 				}
 				break;
 			case 13:
 				tk = new Token();
 				tk.setTipo(Tipos.SE);
 				return tk;
+
+			case 14:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 2;
+					lookahead = buffer.getNext();
+					break;
+				case 'E':
+					estado = 15;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+
+			case 15:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 3;
+					lookahead = buffer.getNext();
+					break;
+				case 'G':
+					estado = 16;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			case 16:
+				switch (lookahead) {
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+
+				case '8':
+				case '9':
+					estado = 4;
+					lookahead = buffer.getNext();
+					break;
+
+				case 'I':
+					estado = 17;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			case 17:
+				switch (lookahead) {
+				case 'N':
+					estado = 18;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+
+			case 18:
+				tk = new Token();
+				tk.setTipo(Tipos.INICIO);
+				return tk;
+
+			case 19:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 2;
+					lookahead = buffer.getNext();
+					break;
+
+				case 'N':
+					estado = 20;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			
 			case 20:
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				estado=20;
-				lookahead = buffer.getNext();
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				
+				case 'E':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 3;
+					lookahead = buffer.getNext();
+					break;
+				case 'D':
+					estado = 21;
+					lookahead=buffer.getNext();
+					break;
+				default:
+
+				}
 				break;
-			case '.':
-				estado = 22;
-				lookahead = buffer.getNext();
+			case 21:
+				tk = new Token();
+				tk.setTipo(Tipos.FIM);
+				return tk;
+			
+			case 22:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 2;
+					lookahead = buffer.getNext();
+					break;
+				case 'E':
+					estado = 23;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
 				break;
-			default:
-		}	
+			
+			case 23:
+				switch (lookahead) {
+				
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 3;
+					lookahead = buffer.getNext();
+					break;
+				case 'A':
+					estado = 24;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			
+			case 24:
+				switch (lookahead) {
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					estado = 4;
+					lookahead = buffer.getNext();
+					break;
+
+				case 'D':
+					estado = 25;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("ERRO");
+				}
+				break;
 		
-		return null;
+			case 25:
+				tk = new Token();
+				tk.setTipo(Tipos.OPLER);
+				return tk;
+			
+			case 26:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'I':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 2;
+					lookahead = buffer.getNext();
+					break;
+				case 'R':
+					estado = 27;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+			
+			case 27:
+				switch (lookahead) {
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'D':
+				case 'E':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'J':
+				case 'K':
+				case 'L':
+				case 'M':
+				case 'N':
+				case 'O':
+				case 'P':
+				case 'Q':
+				case 'R':
+				case 'S':
+				case 'T':
+				case 'U':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+				case 'Z':
+					estado = 3;
+					lookahead = buffer.getNext();
+					break;
+				case 'I':
+					estado = 28;
+					lookahead = buffer.getNext();
+					break;
+				default:
+
+				}
+				break;
+				
+			case 28:
+				switch (lookahead) {
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					estado = 4;
+					lookahead = buffer.getNext();
+					break;
+
+				case 'T':
+					estado = 29;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("ERRO");
+				}
+				break;
+				
+			case 29:
+				switch (lookahead) {
+				case 'E':
+					estado = 30;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+			
+			case 30:
+				tk = new Token();
+				tk.setTipo(Tipos.OPESCRE);
+				return tk;
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			//FIM SWITCH CASE PRINCIPAL
+			}
+
+			return null;
 		}
-	
-	
 
 	}
 }
