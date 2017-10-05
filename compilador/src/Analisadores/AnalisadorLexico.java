@@ -93,6 +93,9 @@ public class AnalisadorLexico {
 				case '7':
 				case '8':
 				case '9':
+					estado = 31;
+					lookahead = buffer.getNext();
+					break;
 
 				default:
 					System.out.println("Erro na sequencia " + buffer.getValue());
@@ -548,13 +551,13 @@ public class AnalisadorLexico {
 
 				}
 				break;
-			
+
 			case 20:
 				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
-				
+
 				case 'E':
 				case 'F':
 				case 'G':
@@ -582,7 +585,7 @@ public class AnalisadorLexico {
 					break;
 				case 'D':
 					estado = 21;
-					lookahead=buffer.getNext();
+					lookahead = buffer.getNext();
 					break;
 				default:
 
@@ -592,14 +595,14 @@ public class AnalisadorLexico {
 				tk = new Token();
 				tk.setTipo(Tipos.FIM);
 				return tk;
-			
+
 			case 22:
 				switch (lookahead) {
 				case 'A':
 				case 'B':
 				case 'C':
 				case 'D':
-				
+
 				case 'F':
 				case 'G':
 				case 'H':
@@ -632,10 +635,10 @@ public class AnalisadorLexico {
 
 				}
 				break;
-			
+
 			case 23:
 				switch (lookahead) {
-				
+
 				case 'B':
 				case 'C':
 				case 'D':
@@ -672,7 +675,7 @@ public class AnalisadorLexico {
 
 				}
 				break;
-			
+
 			case 24:
 				switch (lookahead) {
 				case '0':
@@ -697,12 +700,12 @@ public class AnalisadorLexico {
 					System.out.println("ERRO");
 				}
 				break;
-		
+
 			case 25:
 				tk = new Token();
 				tk.setTipo(Tipos.OPLER);
 				return tk;
-			
+
 			case 26:
 				switch (lookahead) {
 				case 'A':
@@ -741,7 +744,7 @@ public class AnalisadorLexico {
 
 				}
 				break;
-			
+
 			case 27:
 				switch (lookahead) {
 				case 'A':
@@ -780,7 +783,7 @@ public class AnalisadorLexico {
 
 				}
 				break;
-				
+
 			case 28:
 				switch (lookahead) {
 				case '0':
@@ -805,7 +808,7 @@ public class AnalisadorLexico {
 					System.out.println("ERRO");
 				}
 				break;
-				
+
 			case 29:
 				switch (lookahead) {
 				case 'E':
@@ -819,44 +822,81 @@ public class AnalisadorLexico {
 					estado = 0;
 				}
 				break;
-			
+
 			case 30:
 				tk = new Token();
 				tk.setTipo(Tipos.OPESCRE);
 				return tk;
-	
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			//FIM SWITCH CASE PRINCIPAL
+
+			case 31:
+				switch (lookahead) {
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					estado = 31;
+					lookahead = buffer.getNext();
+					break;
+				case '.':
+					estado = 32;
+					lookahead = buffer.getNext();
+					break;
+				case ';':
+					estado = 33;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+
+			case 32:
+				switch (lookahead) {
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					estado = 32;
+					lookahead = buffer.getNext();
+					break;
+				case ';':
+					estado = 34;
+					lookahead = buffer.getNext();
+					break;
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+
+			case 33:
+				tk = new Token();
+				tk.setTipo(Tipos.NUMINT);
+				return tk;
+
+			case 34:
+				tk = new Token();
+				tk.setTipo(Tipos.NUMREAL);
+				return tk;
+
+			// FIM SWITCH CASE PRINCIPAL
 			}
 
 			return null;
