@@ -96,6 +96,58 @@ public class AnalisadorLexico {
 					estado = 31;
 					lookahead = buffer.getNext();
 					break;
+				case '(':
+					estado = 41;
+					lookahead = buffer.getNext();
+					break;
+				case ')':
+					estado = 42;
+					lookahead = buffer.getNext();
+					break;
+				case '+':
+					estado = 43;
+					lookahead = buffer.getNext();
+					break;
+				case '-':
+					estado = 44;
+					lookahead = buffer.getNext();
+					break;
+				case '*':
+					estado = 45;
+					lookahead = buffer.getNext();
+					break;
+				case '/':
+					estado = 46;
+					lookahead = buffer.getNext();
+					break;
+				case '%':
+					estado = 46;
+					lookahead = buffer.getNext();
+					break;
+				case ';':
+					estado = 47;
+					lookahead = buffer.getNext();
+					break;
+				case '>':
+					estado = 48;
+					lookahead = buffer.getNext();
+					break;
+				case '<':
+					estado = 49;
+					lookahead = buffer.getNext();
+					break;
+				case '=':
+					estado = 35;
+					lookahead = buffer.getNext();
+					break;
+				case ':':
+					estado = 37;
+					lookahead = buffer.getNext();
+					break;
+				case '!':
+					estado = 39;
+					lookahead = buffer.getNext();
+					break;
 
 				default:
 					System.out.println("Erro na sequencia " + buffer.getValue());
@@ -895,7 +947,102 @@ public class AnalisadorLexico {
 				tk = new Token();
 				tk.setTipo(Tipos.NUMREAL);
 				return tk;
+			
+			case 35:
+				switch (lookahead) {
+				case '=':				
+					estado = 36;
+					lookahead = buffer.getNext();
+					break;			
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+				
+			case 36:
+				tk = new Token();
+				tk.setTipo(Tipos.OPIGUAL);
+				return tk;
+				
+			case 37:
+				switch (lookahead) {
+				case '=':				
+					estado = 38;
+					lookahead = buffer.getNext();
+					break;			
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+				
+			case 38:
+				tk = new Token();
+				tk.setTipo(Tipos.OPATRIB);
+				return tk;
+			
+			case 39:
+				switch (lookahead) {
+				case '=':				
+					estado = 40;
+					lookahead = buffer.getNext();
+					break;			
+				default:
+					System.out.println("Erro na sequencia " + buffer.getValue());
+					while (lookahead != ' ' || lookahead != '\n' || lookahead != '\t')
+						lookahead = buffer.getNext();
+					estado = 0;
+				}
+				break;
+				
+			case 40:
+				tk = new Token();
+				tk.setTipo(Tipos.OPDIF);
+				return tk;
 
+			case 41:
+				tk = new Token();
+				tk.setTipo(Tipos.TABREPARENTESES);
+				return tk;
+			case 42:
+				tk = new Token();
+				tk.setTipo(Tipos.TFECHAPARENTESES);
+				return tk;
+			case 43:
+				tk = new Token();
+				tk.setTipo(Tipos.OPSOMA);
+				return tk;
+			case 44:
+				tk = new Token();
+				tk.setTipo(Tipos.OPSUBTRAI);
+				return tk;
+			case 45:
+				tk = new Token();
+				tk.setTipo(Tipos.OPMULT);
+				return tk;
+			case 46:
+				tk = new Token();
+				tk.setTipo(Tipos.OPDIV);
+				return tk;
+			case 47:
+				tk = new Token();
+				tk.setTipo(Tipos.INSTFIM);
+				return tk;
+			case 48:
+				tk = new Token();
+				tk.setTipo(Tipos.OPMAIOR);
+				return tk;
+			case 49:
+				tk = new Token();
+				tk.setTipo(Tipos.OPMENOR);
+				return tk;
+				
+			
 			// FIM SWITCH CASE PRINCIPAL
 			}
 
